@@ -2,6 +2,9 @@
 # Goal: Whenever semeone changes the python code,
 # The linter will check if the syntax, format, indentation (Linting) is correct or not
 
+
+# Goal: Automatically check Python code whenever it changes.
+
 name: Auto Linter
 
 on:
@@ -14,6 +17,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Clone the code into the runner
-      - name: Checkout/Clone the code
+      # Step 1: Clone the repository
+      - name: Checkout the code
         uses: actions/checkout@v7
+
+      # Step 2: Setup Python
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      # Step 3: Install Linter
+      - name: Install Linter
+        run: pip install ruff
+
+      # Step 4: Run Linter
+      - name: Check Python code
+        run: ruff check .
+
+      # Step 5: Check formatting
+      - name: Check formatting
+        run: ruff format --check .
